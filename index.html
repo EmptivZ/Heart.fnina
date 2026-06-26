@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nina, My everything...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #060606;
+            --text-primary: #ffffff;
+            --text-secondary: #ffb3c6;
+            --accent: #ff4d6d;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Efek Hujan Partikel Objek (Bumi, Love Merah, Love Putih) --- */
+        /* --- Efek Hujan Partikel Kelopak Bunga Samar --- */
+.petal {
+    position: fixed;
+    top: -10vh;
+    pointer-events: none;
+    z-index: 999;
+    user-select: none;
+    animation: fall linear infinite;
+    
+    /* Membuat bentuk kelopak bunga menggunakan border-radius melengkung asimetris */
+    background: linear-gradient(135deg, #ffb3c6, #ffccd5);
+    border-radius: 0 100% 0 100%;
+    
+    /* Memberikan efek samar/transparan awal */
+    opacity: 0.4;
+    filter: blur(0.5px);
+}
+
+@keyframes fall {
+    0% { 
+        top: -10vh; 
+        transform: translateX(0) rotate(0deg); 
+        opacity: 0; 
+    }
+    10% { 
+        /* Saat mulai terlihat, tetap samar (maksimal opacity 0.5 atau sesuaikan selera) */
+        opacity: 0.5; 
+    }
+    100% { 
+        top: 110vh; 
+        /* Efek meliuk tertiup angin dan berputar saat jatuh */
+        transform: translateX(150px) rotate(450deg); 
+        opacity: 0; 
+    }
+}
+        /* --- Tampilan Pembuka (Gift Box Overlay) --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #4a0e2e 0%, #10020b 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        .gift-box {
+            font-size: 80px;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            transition: transform 0.3s;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .tap-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- Music Player Floating --- */
+        .music-player {
+            position: fixed;
+            bottom: 20px; left: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 998;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .music-info marquee { width: 110px; font-size: 12px; color: var(--text-secondary); }
+
+        /* --- Main Content Container --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        header {
+            height: 45vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .title-sub { font-style: italic; color: var(--text-secondary); margin-bottom: 10px; letter-spacing: 1px; }
+        .main-title { font-size: 3rem; margin-bottom: 15px; letter-spacing: 1px; color: #ff75a0; text-shadow: 0 0 15px rgba(255,117,160,0.3); }
+        
+        section { margin-bottom: 90px; padding-top: 10px; }
+
+        /* --- TAMAN BUNGA ASLI (BISA DIKLIK MUNCUL TEKS POPUP) --- */
+        .flower-garden {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .flower-item {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 110px;
+            text-align: center;
+        }
+        .flower-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 77, 109, 0.1);
+            border-color: var(--accent);
+        }
+        .flower-icon {
+            font-size: 40px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .flower-label {
+            font-size: 12px;
+            color: #ddd;
+            display: block;
+        }
+
+        /* Pop-up Pesan Bunga */
+        .flower-message-box {
+            margin: 20px auto 0 auto;
+            max-width: 500px;
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid var(--accent);
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            color: #ffccd5;
+            font-size: 14px;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- CANVAS INTERAKTIF: PARTIKEL NEON BISA DIUSAP --- */
+        .interactive-canvas-container {
+            background: #000000;
+            border-radius: 20px;
+            padding: 10px;
+            border: 2px dashed #ff4d6d;
+            margin: 35px 0 15px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.25);
+        }
+        #loveCanvas {
+            background: #000000;
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            cursor: pointer;
+            touch-action: none;
+        }
+        .canvas-hint {
+            position: absolute;
+            top: 20px; left: 50%;
+            transform: translateX(-50%);
+            color: #ffb3c6;
+            pointer-events: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-align: center;
+            text-shadow: 0 0 8px rgba(255,77,109,0.8);
+            animation: pulse 1.5s infinite alternate;
+            z-index: 5;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        .canvas-toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* --- STUDIO PHOTOBOOTH --- */
+        .photobooth-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            padding: 30px 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .booth-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        @media(min-width: 768px) { .booth-container { flex-direction: row; align-items: flex-start; } }
+        
+        .camera-box {
+            flex: 1; width: 100%; max-width: 380px;
+            background: #121216; padding: 15px;
+            border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        #webcam { width: 100%; height: auto; border-radius: 8px; background: #000; transform: scaleX(-1); }
+        .booth-controls { margin-top: 15px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+        .control-group { display: flex; flex-direction: column; gap: 5px; }
+        .control-group label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        
+        .booth-controls select, .booth-btn {
+            background: #1e1e24; border: 1px solid #333; color: #fff;
+            padding: 10px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; outline: none;
+        }
+        .booth-btn.primary {
+            background: linear-gradient(45deg, #ff4d6d, #c77dff); border: none; font-weight: 600;
+            padding: 12px; box-shadow: 0 4px 12px rgba(255,77,109,0.3);
+        }
+
+        .output-box { width: 100%; max-width: 250px; }
+        .photo-strip {
+            background: #ffffff; padding: 15px 15px 25px 15px; width: 100%;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 10px;
+        }
+        .strip-frame {
+            width: 100%; height: 155px; background: #f0f0f0;
+            overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .strip-frame img { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        .strip-footer { text-align: center; font-family: 'Playfair Display', serif; font-size: 13px; color: #444; margin-top: 8px; font-style: italic; }
+
+        /* Filter Kamera */
+        .filter-normal { filter: none; }
+        .filter-softglow { filter: brightness(1.1) contrast(0.92) saturate(1.1) blur(0.2px); }
+        .filter-retropink { filter: sepia(0.15) contrast(0.95) saturate(1.35) hue-rotate(-10deg); }
+        .filter-fairyfloss { filter: brightness(1.05) contrast(0.9) saturate(1.4) hue-rotate(330deg); }
+
+        .sticker-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; background-size: contain; background-repeat: no-repeat; background-position: center; z-index: 5;
+        }
+
+        /* --- FITUR: AMPLop SURAT INTERAKTIF (AWALNYA TERTUTUP SEMPURNA) --- */
+        .envelope-section {
+            margin-top: 100px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            width: 220px;
+            height: 140px;
+            background-color: #ffb3c6; /* Badan Amplop Utama */
+            margin: 40px auto;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+        .envelope-wrapper:hover { transform: scale(1.03); }
+        
+        /* Segitiga Penutup Lipatan Atas (Mulai dari Kondisi Tertutup Kebawah) */
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 110px solid transparent;
+            border-right: 110px solid transparent;
+            border-top: 75px solid #ffccd5; /* Posisi Awal Menutup Kebawah */
+            transform-origin: top;
+            transition: transform 0.4s ease-in-out;
+            z-index: 5; /* Di atas segel saat tertutup */
+        }
+        
+        /* Badan Lipatan Depan Kiri-Kanan-Bawah */
+        .envelope-front {
+            position: absolute;
+            width: 0; height: 0;
+            border-left: 110px solid transparent;
+            border-right: 110px solid transparent;
+            border-bottom: 75px solid #ffccd5;
+            top: 65px; left: 0;
+            z-index: 4;
+        }
+        .envelope-front::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 0;
+            border-left: 110px solid #ffb3c6;
+            border-bottom: 140px solid transparent;
+            top: -65px; left: -110px;
+        }
+        
+        /* Segel Lilin Bulat */
+        .envelope-seal {
+            position: absolute;
+            width: 36px; height: 36px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+            top: 52px; left: 92px;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* Kertas Surat Garis Estetik Tersembunyi di Dalam */
+        .letter-paper {
+            position: absolute;
+            background: #ffffff;
+            background-image: linear-gradient(#f2f2f2 1px, transparent 1px);
+            background-size: 100% 24px;
+            width: 190px;
+            height: 0;
+            left: 15px; top: 10px;
+            border-radius: 6px;
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 2;
+            overflow: hidden;
+            padding: 0 10px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        .letter-paper h3 { font-size: 12px; color: #ff4d6d; margin-top: 10px; line-height: 24px; text-align: left; }
+        .letter-paper p { font-size: 10px; color: #333; line-height: 24px; text-align: left; }
+
+        /* --- ANIMASI KETIKA AMPLop DIKLIK BUKA (OPEN CLASS) --- */
+        .envelope-wrapper.open::before {
+            transform: rotateX(180deg) translateY(75px); /* Membuka Lipatan ke Atas */
+            z-index: 1;
+        }
+        .envelope-wrapper.open .letter-paper {
+            height: 330px;
+            top: -250px; /* Meluncur ke Atas Keluar dari Kantong */
+            width: 300px;
+            left: -40px;
+            padding: 20px;
+            z-index: 10;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.45);
+        }
+        .envelope-wrapper.open .letter-paper h3 { font-size: 17px; margin-bottom: 5px; }
+        .envelope-wrapper.open .letter-paper p { font-size: 13px; }
+        .envelope-wrapper.open .envelope-seal { opacity: 0; transform: scale(0); }
+
+        footer { margin-top: 60px; font-size: 12px; color: #555; padding-bottom: 40px; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="romantic.mp3" loop></audio>
+
+    <div id="intro-overlay">
+        <div class="gift-box" onclick="bukaKado()">🎁</div>
+        <div class="tap-text">✨ klik untuk buka paket kado ✨</div>
+    </div>
+
+    <div class="music-player">
+        <span style="font-size: 14px;">🎵</span>
+        <div class="music-info">
+            <marquee behavior="scroll" direction="left">from this moment on - Shania Twain</marquee>
+        </div>
+    </div>
+
+    <div class="container" id="main-content">
+        
+        <header>
+            <p class="title-sub">🌸 special online experience 🌸</p>
+            <h1 class="main-title">For My Favorite Person</h1>
+            <p style="color: #aaa; font-size:13px;">Kumpulan kejutan interaktif yang dirancang khusus untuk kamu.</p>
+        </header>
+
+        <section id="tamanBunga">
+            <p class="title-sub">our secret garden</p>
+            <h2 style="font-size: 1.8rem; margin-bottom: 5px;">A Garden Grown Just For You</h2>
+            <p style="font-size: 12px; color: gray; margin-bottom: 20px;">Klik setiap bunga di bawah untuk memunculkan pesan rahasianya!</p>
+            
+            <div class="flower-garden">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Mawar Merah melambangkan rasa cinta dan kekagumanku yang sangat mendalam kepadamu setiap harinya. ❤️')">
+                    <span class="flower-icon">🌹</span>
+                    <span class="flower-label">Mawar</span>
+                </div>
+                <div class="flower-item" onclick="tampilkanPesanBunga('Tulip Merah Muda melambangkan sebuah kebahagiaan sempurna sejak kehadiranmu melengkapi hidupku. 🌷')">
+                    <span class="flower-icon">🌷</span>
+                    <span class="flower-label">Tulip</span>
+                </div>
+                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Matahari melambangkan kehangatan dan kesetiaan yang tak pernah redup untukmu. 🌻')">
+                    <span class="flower-icon">🌻</span>
+                    <span class="flower-label">Matahari</span>
+                </div>
+                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Daisy putih bersih melambangkan ketulusan dan kemurnian niat hatiku bersamamu. 🌼')">
+                    <span class="flower-icon">🌼</span>
+                    <span class="flower-label">Daisy</span>
+                </div>
+                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Sakura melambangkan keindahan momen berharga yang selalu kita lalui bersama. 🌸')">
+                    <span class="flower-icon">🌸</span>
+                    <span class="flower-label">Sakura</span>
+                </div>
+            </div>
+
+            <div class="flower-message-box" id="kotakPesanBunga"></div>
+        </section>
+
+        <section style="margin-top: 60px;">
+            <p class="title-sub">interactive magical art</p>
+            <h2 style="font-size: 1.9rem; margin-bottom: 5px;">Goyang & Usap Layarnya! ✨</h2>
+            <p style="font-size: 12px; color: #aaa; margin-bottom: 25px;">Gunakan jarimu untuk mengusap teks neon di bawah agar partikelnya buyar menari</p>
+            
+            <div class="canvas-toolbar">
+                <button class="btn-mode active" id="btnTeks1" onclick="ubahBentukPartikel('teks_love')">Teks "I ♡ YOU" 📋</button>
+                <button class="btn-mode" id="btnHati" onclick="ubahBentukPartikel('hati')">Bentuk Love 💖</button>
+            </div>
+
+            <div class="interactive-canvas-container">
+                <div class="canvas-hint">👋 COBA USAP & GESER JARIMU DI ATAS CANVAS 👋</div>
+                <canvas id="loveCanvas"></canvas>
+            </div>
+        </section>
+
+        <section class="photobooth-section">
+            <p class="title-sub">online photobooth v1</p>
+            <h2 style="font-size:2rem; color:var(--text-secondary);">Zeniva's Studio Booth 📸</h2>
+            <div class="booth-container">
+                <div class="camera-box">
+                    <video id="webcam" autoplay playsinline></video>
+                    <div class="booth-controls">
+                        <div class="control-group">
+                            <label>Jumlah Slot Foto</label>
+                            <select id="slotSelect" onchange="aturUlangSlot()">
+                                <option value="4" selected>4 Foto (Standard)</option>
+                                <option value="3">3 Foto</option>
+                                <option value="2">2 Foto</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Filter Efek Aesthetic 🎀</label>
+                            <select id="filterSelect" onchange="gantiFilterKamera()">
+                                <option value="filter-normal">Normal</option>
+                                <option value="filter-softglow">✨ Soft Glow</option>
+                                <option value="filter-retropink">🌸 Retro Pink</option>
+                                <option value="filter-fairyfloss">🍭 Fairy Floss</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Stiker Animasi Kawaii 🧸</label>
+                            <select id="stickerSelect">
+                                <option value="none">Tanpa Stiker</option>
+                                <option value="sanrio">🐱 Sanrio Friends</option>
+                                <option value="peachgoma">🧸 Peach Goma</option>
+                                <option value="sparkles">✨ Sparkles Glitter</option>
+                            </select>
+                        </div>
+                        <button class="booth-btn primary" id="snapBtn" onclick="ambilFotoSatuSatu()">Mulai Ambil Foto (Pose!)</button>
+                        <button class="booth-btn" onclick="resetPhotobooth()">Foto Ulang 🔄</button>
+                    </div>
+                </div>
+                <div class="output-box">
+                    <div class="photo-strip" id="kertasStrip">
+                        <div id="containerSlotFoto" style="display:flex; flex-direction:column; gap:10px; width:100%;"></div>
+                        <div class="strip-footer">with love, zan & zeniva ♡</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="envelope-section">
+            <p class="title-sub">secret message</p>
+            <h2 style="font-size: 1.8rem; margin-bottom: 5px;">Surat Rahasia Untukmu ✉️</h2>
+            <p style="font-size: 12px; color: #aaa;">Klik amplop atau segel hati untuk membuka penutup & mengeluarkan surat</p>
+            
+            <div class="envelope-wrapper" id="amplopUtama" onclick="toggleSurat()">
+                <div class="envelope-seal">❤️</div>
+                <div class="envelope-front"></div>
+                <div class="letter-paper">
+                    <h3>Happy Birthday Sayang! 🎉</h3>
+                    <p>Di hari spesial ini, aku ingin kamu tahu betapa berartinya kehadiranmu dalam hidupku.</p>
+                    <p>Kehadiranmu membawa kebahagiaan yang tidak bisa digantikan oleh siapa pun.</p>
+                    <p>Terima kasih sudah selalu ada, menemani, dan mencintai aku dengan tulus.</p>
+                    <p>Semoga di usia barumu ini, semua impianmu perlahan menjadi nyata, langkahmu selalu dimudahkan, dan hatimu selalu dipenuhi kebahagiaan.</p>
+                    <p style="text-align: right; font-weight: bold; color: #ff4d6d; margin-top: 10px;">— Always Yours, Zan ♥</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>made with loyalty by zan, just for zeniva 🤍</p>
+        </footer>
+    </div>
+
+    <script>
+        // Logika Klik Tampilkan Teks Pesan Rahasia Komponen Bunga
+        function tampilkanPesanBunga(pesanTeks) {
+            const box = document.getElementById('kotakPesanBunga');
+            box.innerText = pesanTeks;
+            box.style.display = 'block';
+        }
+
+        // Logika klik amplop membuka penutup lipatan atas & meluncurkan surat
+        function toggleSurat() {
+            const amplop = document.getElementById('amplopUtama');
+            amplop.classList.toggle('open');
+        }
+
+        function bukaKado() {
+            document.getElementById('intro-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro-overlay').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                setInterval(createPetal, 300); // Trigger efek hujan partikel
+                initCanvasLove();
+                bukaAksesKamera();
+                aturUlangSlot();
+            }, 1000);
+            document.getElementById('bg-music').play().catch(e => console.log("Autoplay ditangguhkan browser"));
+        }
+
+        // Kumpulan emoji hujan partikel sesuai instruksi: Bumi, Love Merah, Love Putih
+       function createPetal() {
+    const petal = document.createElement('div');
+    petal.classList.add('petal');
+    
+    // Mengatur posisi acak di layar
+    petal.style.left = Math.random() * 100 + 'vw';
+    
+    // Mengatur ukuran kelopak secara acak agar bervariasi (antara 10px hingga 25px)
+    const size = Math.random() * 15 + 10;
+    petal.style.width = size + 'px';
+    petal.style.height = size + 'px';
+    
+    // Mengatur kecepatan jatuh secara acak
+    petal.style.animationDuration = Math.random() * 4 + 4 + 's';
+    
+    document.body.appendChild(petal);
+    setTimeout(() => { petal.remove(); }, 8000);
+}
+
+        /* ============================================================ */
+        /* LOGIKA CANVAS UTAMA PARTIKEL NEON - RESPONSIF SENTUHAN JARI  */
+        /* ============================================================ */
+        let canvas, ctx, particleArray = [];
+        let mouse = { x: null, y: null, radius: 65 };
+        let modeAktif = 'teks_love'; // Default langsung teks "I ♡ YOU ZENIVA"
+
+        function initCanvasLove() {
+            canvas = document.getElementById('loveCanvas');
+            ctx = canvas.getContext('2d');
+            adjustCanvasSize();
+            rakitPartikel();
+
+            canvas.addEventListener('mousemove', function(e) {
+                const r = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - r.left;
+                mouse.y = e.clientY - r.top;
+            });
+
+            canvas.addEventListener('touchmove', function(e) {
+                if(e.touches.length > 0) {
+                    const r = canvas.getBoundingClientRect();
+                    mouse.x = e.touches[0].clientX - r.left;
+                    mouse.y = e.touches[0].clientY - r.top;
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+            canvas.addEventListener('touchend', () => { mouse.x = null; mouse.y = null; });
+
+            window.addEventListener('resize', () => {
+                adjustCanvasSize();
+                rakitPartikel();
+            });
+
+            loopAnimasi();
+        }
+
+        function adjustCanvasSize() {
+            canvas.width = canvas.parentElement.clientWidth - 20;
+            canvas.height = 400;
+        }
+
+        class TitikPartikel {
+            constructor(x, y) {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = Math.random() * 2 + 1.2;
+                this.density = (Math.random() * 30) + 12;
+                this.color = `hsl(${340 + Math.random() * 15}, 100%, 65%)`;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = '#ff4d6d';
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < mouse.radius) {
+                    let force = (mouse.radius - distance) / mouse.radius;
+                    let dirX = (dx / distance) * force * this.density;
+                    let dirY = (dy / distance) * force * this.density;
+                    this.x -= dirX;
+                    this.y -= dirY;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 12;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 12;
+                }
+            }
+        }
+
+        function ubahBentukPartikel(mode) {
+            modeAktif = mode;
+            document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
+            if(mode === 'hati') document.getElementById('btnHati').classList.add('active');
+            if(mode === 'teks_love') document.getElementById('btnTeks1').classList.add('active');
+            rakitPartikel();
+        }
+
+        function rakitPartikel() {
+            particleArray = [];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.shadowBlur = 0;
+
+            if (modeAktif === 'hati') {
+                const totalPoints = 420;
+                for (let i = 0; i < totalPoints; i++) {
+                    let angle = (i / totalPoints) * Math.PI * 2;
+                    let targetX = 16 * Math.pow(Math.sin(angle), 3);
+                    let targetY = 13 * Math.cos(angle) - 5 * Math.cos(2*angle) - 2 * Math.cos(3*angle) - Math.cos(4*angle);
+                    
+                    let scale = Math.min(canvas.width / 40, 9.5);
+                    let finalX = (canvas.width / 2) + (targetX * scale);
+                    let finalY = (canvas.height / 2) - (targetY * scale) + 15;
+                    particleArray.push(new TitikPartikel(finalX, finalY));
+                }
+            } else {
+                ctx.fillStyle = 'white';
+                let fontSize = canvas.width < 450 ? '24px' : '34px';
+                ctx.font = 'bold ' + fontSize + ' sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                ctx.fillText("I ♡ YOU ZENIVA", canvas.width / 2, canvas.height / 2);
+
+                const dataGaris = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                for (let y = 0; y < dataGaris.height; y += 4) {
+                    for (let x = 0; x < dataGaris.width; x += 4) {
+                        if (dataGaris.data[(y * 4 * dataGaris.width) + (x * 4) + 3] > 128) {
+                            particleArray.push(new TitikPartikel(x, y));
+                        }
+                    }
+                }
+            }
+        }
+
+        function loopAnimasi() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particleArray.length; i++) {
+                particleArray[i].draw();
+                particleArray[i].update();
+            }
+            requestAnimationFrame(loopAnimasi);
+        }
+
+        /* --- PHOTOBOOTH LOGIC CONTROLLER --- */
+        let streamActive = null;
+        const videoElement = document.getElementById('webcam');
+
+        function bukaAksesKamera() {
+            navigator.mediaDevices.getUserMedia({ video: { width: 400, height: 300 }, audio: false })
+                .then(s => { videoElement.srcObject = s; streamActive = s; })
+                .catch(e => console.log("Kamera diblokir browser"));
+        }
+
+        function aturUlangSlot() {
+            const slot = parseInt(document.getElementById('slotSelect').value);
+            const container = document.getElementById('containerSlotFoto');
+            container.innerHTML = '';
+            for(let i = 1; i <= slot; i++) {
+                container.innerHTML += `<div class="strip-frame" id="slot-${i}"><span style="color:#666; font-size:11px;">Slot Pose ${i}</span></div>`;
+            }
+        }
+
+        function gantiFilterKamera() {
+            videoElement.className = document.getElementById('filterSelect').value;
+        }
+
+        function ambilFotoSatuSatu() {
+            const slot = parseInt(document.getElementById('slotSelect').value);
+            let counter = 1;
+            document.getElementById('snapBtn').disabled = true;
+
+            function jepret() {
+                if(counter > slot) {
+                    document.getElementById('snapBtn').disabled = false;
+                    document.getElementById('snapBtn').innerText = "Selesai ✨";
+                    return;
+                }
+                let count = 3;
+                let t = setInterval(() => {
+                    count--;
+                    if(count <= 0) {
+                        clearInterval(t);
+                        eksekusiKamera(counter);
+                        counter++;
+                        jepret();
+                    }
+                }, 1000);
+            }
+            jepret();
+        }
+
+        function eksekusiKamera(idx) {
+            const frame = document.getElementById(`slot-${idx}`);
+            if(!frame) return;
+            const c = document.createElement('canvas');
+            c.width = 400; c.height = 300;
+            c.getContext('2d').drawImage(videoElement, 0, 0, 400, 300);
+            
+            const img = document.createElement('img');
+            img.src = c.toDataURL('image/jpeg');
+            img.className = videoElement.className;
+            frame.innerHTML = ''; frame.appendChild(img);
+
+            const stiker = document.getElementById('stickerSelect').value;
+            if(stiker !== 'none') {
+                const ov = document.createElement('div');
+                ov.classList.add('sticker-overlay');
+                if(stiker === 'sanrio') ov.style.backgroundImage = "url('https://media.tenor.com/FwFjZndV-m0AAAAi/sanrio.gif')";
+                if(stiker === 'peachgoma') ov.style.backgroundImage = "url('https://media.tenor.com/1v_m8WkO1gIAAAAi/peach-and-goma-peach-goma.gif')";
+                if(stiker === 'sparkles') ov.style.backgroundImage = "url('https://media.tenor.com/7gK1Nf476mMAAAAi/sparkle-stars.gif')";
+                frame.appendChild(ov);
+            }
+        }
+
+        function resetPhotobooth() {
+            aturUlangSlot();
+            document.getElementById('snapBtn').disabled = false;
+            document.getElementById('snapBtn').innerText = "Mulai Ambil Foto (Pose!)";
+        }
+    </script>
+</body>
+</html>
