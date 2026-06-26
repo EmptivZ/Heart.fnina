@@ -400,8 +400,8 @@
     <audio id="bg-music" src="romantic.mp3" loop></audio>
 
     <div id="intro-overlay">
-        <div class="gift-box" onclick="bukaKado()">🎁</div>
-        <div class="tap-text">✨ klik untuk buka paket kado ✨</div>
+        <div class="gift-box" onclick="bukaKado()">🩷</div>
+        <div class="tap-text">I Love You</div>
     </div>
 
     <div class="music-player">
@@ -414,34 +414,34 @@
     <div class="container" id="main-content">
         
         <header>
-            <p class="title-sub">🌸 special online experience 🌸</p>
-            <h1 class="main-title">For My Favorite Person</h1>
-            <p style="color: #aaa; font-size:13px;">Kumpulan kejutan interaktif yang dirancang khusus untuk kamu.</p>
+            <p class="title-sub">My beatin' heart belongs to you</p>
+            <h1 class="main-title">Nina, My everything...</h1>
+            <p style="color: #aaa; font-size:13px;">Givin' all my love to you.</p>
         </header>
 
         <section id="tamanBunga">
             <p class="title-sub">our secret garden</p>
             <h2 style="font-size: 1.8rem; margin-bottom: 5px;">A Garden Grown Just For You</h2>
-            <p style="font-size: 12px; color: gray; margin-bottom: 20px;">Klik setiap bunga di bawah untuk memunculkan pesan rahasianya!</p>
+            <p style="font-size: 12px; color: gray; margin-bottom: 20px;">Setiap bunga ada rahasianya sayang</p>
             
             <div class="flower-garden">
-                <div class="flower-item" onclick="tampilkanPesanBunga('Mawar Merah melambangkan rasa cinta dan kekagumanku yang sangat mendalam kepadamu setiap harinya. ❤️')">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Mawar merah biasanya dipake untuk mengungkapkan cinta ya sayang. Kamu seperti mawar sayang, kamu adalah bentuk cinta dihidup ini.')">
                     <span class="flower-icon">🌹</span>
                     <span class="flower-label">Mawar</span>
                 </div>
-                <div class="flower-item" onclick="tampilkanPesanBunga('Tulip Merah Muda melambangkan sebuah kebahagiaan sempurna sejak kehadiranmu melengkapi hidupku. 🌷')">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Ini bunga tulip ya sayang, bunganya cantik pink kayak kamu, aku sayang kamu cantikku.')">
                     <span class="flower-icon">🌷</span>
                     <span class="flower-label">Tulip</span>
                 </div>
-                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Matahari melambangkan kehangatan dan kesetiaan yang tak pernah redup untukmu. 🌻')">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Matahari, matahari menyinari atuh sayang, artinya kamu mewarnai hidup ini sayang.')">
                     <span class="flower-icon">🌻</span>
                     <span class="flower-label">Matahari</span>
                 </div>
-                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Daisy putih bersih melambangkan ketulusan dan kemurnian niat hatiku bersamamu. 🌼')">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Ni warna putih menunjukan kemurnian sayang, murni aku sangat cinta kamu sayang.')">
                     <span class="flower-icon">🌼</span>
                     <span class="flower-label">Daisy</span>
                 </div>
-                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Sakura melambangkan keindahan momen berharga yang selalu kita lalui bersama. 🌸')">
+                <div class="flower-item" onclick="tampilkanPesanBunga('Bunga Sakura melambangkan keindahan momen berharga yang selalu kita lalui bersama, kata AI gitu sayang, kamu adalah anugrah yang paling indah, aku lebih menikmati hidup bareng kamu sayang')">
                     <span class="flower-icon">🌸</span>
                     <span class="flower-label">Sakura</span>
                 </div>
@@ -452,23 +452,23 @@
 
         <section style="margin-top: 60px;">
             <p class="title-sub">interactive magical art</p>
-            <h2 style="font-size: 1.9rem; margin-bottom: 5px;">Goyang & Usap Layarnya! ✨</h2>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 25px;">Gunakan jarimu untuk mengusap teks neon di bawah agar partikelnya buyar menari</p>
+            <h2 style="font-size: 1.9rem; margin-bottom: 5px;">You are my wildest dream come true</h2>
+            <p style="font-size: 12px; color: #aaa; margin-bottom: 25px;">You're mine</p>
             
             <div class="canvas-toolbar">
-                <button class="btn-mode active" id="btnTeks1" onclick="ubahBentukPartikel('teks_love')">Teks "I ♡ YOU" 📋</button>
-                <button class="btn-mode" id="btnHati" onclick="ubahBentukPartikel('hati')">Bentuk Love 💖</button>
+                <button class="btn-mode active" id="btnTeks1" onclick="ubahBentukPartikel('teks_love')">Teks "I ♡ YOU" </button>
+                <button class="btn-mode" id="btnHati" onclick="ubahBentukPartikel('hati')">A form of love </button>
             </div>
 
             <div class="interactive-canvas-container">
-                <div class="canvas-hint">👋 COBA USAP & GESER JARIMU DI ATAS CANVAS 👋</div>
+                <div class="canvas-hint">For nina</div>
                 <canvas id="loveCanvas"></canvas>
             </div>
         </section>
 
         <section class="photobooth-section">
             <p class="title-sub">online photobooth v1</p>
-            <h2 style="font-size:2rem; color:var(--text-secondary);">Zeniva's Studio Booth 📸</h2>
+            <h2 style="font-size:2rem; color:var(--text-secondary);">Nina's Studio Booth 📸</h2>
             <div class="booth-container">
                 <div class="camera-box">
                     <video id="webcam" autoplay playsinline></video>
@@ -506,7 +506,7 @@
                 <div class="output-box">
                     <div class="photo-strip" id="kertasStrip">
                         <div id="containerSlotFoto" style="display:flex; flex-direction:column; gap:10px; width:100%;"></div>
-                        <div class="strip-footer">with love, zan & zeniva ♡</div>
+                        <div class="strip-footer"> ♡</div>
                     </div>
                 </div>
             </div>
@@ -515,7 +515,8 @@
         <section class="envelope-section">
             <p class="title-sub">secret message</p>
             <h2 style="font-size: 1.8rem; margin-bottom: 5px;">Surat Rahasia Untukmu ✉️</h2>
-            <p style="font-size: 12px; color: #aaa;">Klik amplop atau segel hati untuk membuka penutup & mengeluarkan surat</p>
+            <p style="font-size: 12px; color: #aaa;">Know you're all that I want this life
+</p>
             
             <div class="envelope-wrapper" id="amplopUtama" onclick="toggleSurat()">
                 <div class="envelope-seal">❤️</div>
